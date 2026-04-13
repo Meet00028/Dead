@@ -24,6 +24,24 @@ import { generateSummary } from './utils/geminiAI';
 const initialNodes = [];
 const initialEdges = [];
 
+const nodeTypes = {};
+const edgeTypes = {};
+
+const controlsStyle = {
+  background: 'rgba(0, 0, 0, 0.3)',
+  border: '1px solid rgba(255, 255, 255, 0.2)',
+  borderRadius: '16px',
+  backdropFilter: 'blur(20px)',
+  boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+};
+
+const miniMapStyle = {
+  background: 'rgba(0, 0, 0, 0.3)',
+  border: '1px solid rgba(255, 255, 255, 0.2)',
+  borderRadius: '16px',
+  backdropFilter: 'blur(20px)',
+};
+
 function App() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -230,7 +248,10 @@ function App() {
 
           {/* Main Graph View */}
           {nodes.length > 0 && (
-            <div className={`h-full transition-all duration-300 ${showDashboard && nodes.length > 0 ? 'ml-80' : ''} ${selectedFile ? 'mr-96' : ''}`}>
+            <div 
+              className={`h-full transition-all duration-300 ${showDashboard && nodes.length > 0 ? 'ml-80' : ''} ${selectedFile ? 'mr-96' : ''}`}
+              style={{ width: '100%', height: '100vh' }}
+            >
               <ReactFlow
                 nodes={filteredNodes}
                 edges={edges}
@@ -240,28 +261,17 @@ function App() {
                 onNodeClick={onNodeClick}
                 fitView
                 className="bg-transparent"
-                nodeTypes={{}}
-                edgeTypes={{}}
+                nodeTypes={nodeTypes}
+                edgeTypes={edgeTypes}
               >
                 <Controls 
                   className="bg-black/30 border-white/20 backdrop-blur-xl"
-                  style={{ 
-                    background: 'rgba(0, 0, 0, 0.3)',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
-                    borderRadius: '16px',
-                    backdropFilter: 'blur(20px)',
-                    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
-                  }}
+                  style={controlsStyle}
                 />
                 <MiniMap
                   nodeColor="#667eea"
                   className="bg-black/30 border-white/20 backdrop-blur-xl"
-                  style={{
-                    background: 'rgba(0, 0, 0, 0.3)',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
-                    borderRadius: '16px',
-                    backdropFilter: 'blur(20px)',
-                  }}
+                  style={miniMapStyle}
                 />
                 <Background 
                   variant="dots" 
@@ -353,7 +363,7 @@ function App() {
               Close
             </button>
           </div>
-          <div className="w-full h-full">
+          <div className="w-full h-full" style={{ width: '100%', height: '100vh' }}>
             <ReactFlow
               nodes={nodes}
               edges={edges}
@@ -363,9 +373,11 @@ function App() {
               onNodeClick={onNodeClick}
               fitView
               className="bg-transparent"
+              nodeTypes={nodeTypes}
+              edgeTypes={edgeTypes}
             >
-              <Controls />
-              <MiniMap />
+              <Controls style={controlsStyle} />
+              <MiniMap style={miniMapStyle} />
               <Background variant="dots" gap={24} size={1} color="rgba(255,255,255,0.2)" />
             </ReactFlow>
           </div>
